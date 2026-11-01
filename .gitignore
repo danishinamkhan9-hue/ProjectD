@@ -1,0 +1,15 @@
+cat << 'EOF' > .gitignore
+.venv/
+deberta-feedback-finetuned/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.safetensors
+*.bin
+*.pt
+*.pth
+.DS_Store
+.env
+EOFdeberta-feedback-onnx/
+*.onnx

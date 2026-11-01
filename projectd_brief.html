@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    color: #1a1a1a;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  h1 {
+    font-size: 26pt;
+    color: #1155cc;
+    border-bottom: 2px solid #1155cc;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+  }
+  h2 {
+    font-size: 16pt;
+    color: #333333;
+    margin-top: 28px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 4px;
+  }
+  h3 {
+    font-size: 13pt;
+    color: #444444;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+  p, li {
+    font-size: 11pt;
+    color: #333333;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 10pt;
+  }
+  th, td {
+    border: 1px solid #d0d7de;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background-color: #f6f8fa;
+    font-weight: bold;
+    color: #24292f;
+  }
+  pre {
+    background-color: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    padding: 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 9.5pt;
+    overflow-x: auto;
+  }
+  .callout {
+    background-color: #f0f7ff;
+    border-left: 4px solid #1155cc;
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>ProjectD: B2B Commercial Brief & Strategic Solution Overview</h1>
+
+<div class="callout">
+  <strong>Target Audience:</strong> Direct-to-Consumer (D2C) Founders, Heads of Growth, and VPs of Product.<br>
+  <strong>Core Value Proposition:</strong> Real-time taste modeling and telemetry layer delivering a measurable 15%–35% lift in on-site conversion.
+</div>
+
+<h2>1. Executive Summary</h2>
+<p>Consumer Direct-to-Consumer (D2C) brands allocate 30% to 50% of top-line revenue toward paid digital customer acquisition across performance channels. Despite these substantial investments, downstream digital storefront conversion rates typically stagnate between 1.0% and 2.2%, resulting in significant ad-spend waste.</p>
+<p>Standard digital storefront discovery layers rely on literal keyword queries and broad popularity-based recommendations. These systems are structurally incapable of resolving customer intent ambiguity and cannot register live session friction. <strong>ProjectD</strong> provides an intelligent, plug-and-play taste-modeling, telemetry, and real-time reranking infrastructure layer. By dynamically adapting catalog ordering to implicit visual and behavioral signals within an active session, ProjectD recovers dropped acquisition value, improves product engagement, and delivers measurable bottom-line conversion lift.</p>
+
+<h2>2. The Core Problem Statement: The Underdetermined Storefront</h2>
+<p>Modern consumer platforms face a structural conversion barrier: <strong>Customer Intent Underdetermination</strong>. A customer’s initial browse or search query provides incomplete information compatible with multiple conflicting intents.</p>
+
+<pre>
+┌─────────────────────────────────┐
+│ Paid Inbound Traffic            │
+│ (Meta, Google, Influencers)     │
+└────────────────┬────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────┐
+│ The Underdetermined Search Grid │ ────► Literal keyword matches
+│ (Catalog treats all clicks the  │ ────► Broad popularity heuristics
+│  same way)                      │ ────► Zero friction detection
+└────────────────┬────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────┐
+│ The 98% Leaky Bucket            │
+│ - 70% to 78% Cart Abandonment   │
+│ - 1.0% to 2.2% Average CVR      │
+│ - Unrecovered Paid Ad Spend     │
+└─────────────────────────────────┘
+</pre>
+
+<h3>Key Breakdowns in Current Storefront Implementations</h3>
+<ul>
+  <li><strong>The Intent Ambiguity Trap:</strong> A customer executing five consecutive clicks on running apparel might be looking for technical marathon gear, shopping for minimalist aesthetics, comparing price boundaries, or buying a gift. Standard search engines default to broad popularity priors—repeatedly serving the same assumptions because the system cannot recognize that the guess was wrong.</li>
+  <li><strong>The "Reasoning Harder" Fallacy:</strong> Integrating conventional Large Language Models (LLMs) or Chain-of-Thought reasoning into storefront chat widgets does not solve the underlying ambiguity. LLMs commit to a statistically dominant interpretation early and generate fluent explanations around an ungrounded guess. Without external behavioral signals, language models cannot infer unstated personal taste.</li>
+  <li><strong>The Blind Behavioral Loop:</strong> When an on-site recommendation or search query fails, traditional storefront platforms register no real-time telemetry. If a shopper quickly bounces, scrolls past irrelevant items, or repeatedly rephrases queries, the system fails to log the friction, causing the shopper to drop off silently.</li>
+</ul>
+
+<h2>3. The ProjectD Solution Architecture</h2>
+<p>ProjectD provides an external grounding and behavioral telemetry infrastructure layer. Instead of treating product discovery as a static catalog lookup, ProjectD integrates real-time behavioral telemetry with a <strong>Deep & Cross Network (DCN-v2)</strong> to cross-reference multi-order user taste dimensions with catalog assets on the fly.</p>
+
+<pre>
+       [Shopper Enters Storefront] ──► [ProjectD Browser Telemetry SDK]
+                                                    │
+                 ┌──────────────────────────────────┴──────────────────────────────────┐
+                 ▼                                                                     ▼
+       [Multimodal Taste Space]                                              [Real-Time Intent Prior]
+  Crosses visual style, price band,                                     Tracks live session dwell times,
+   and visual aesthetics (DINOv2/Text)                                  scroll velocity & backtracks
+                 │                                                                     │
+                 └──────────────────────────────────┬──────────────────────────────────┘
+                                                    │
+                                                    ▼
+                                    ┌───────────────────────────────┐
+                                    │     DCN-v2 Taste Reranker     │
+                                    │ Predicts Engagement & Orders  │
+                                    │ Best Matching Products Top-1  │
+                                    └───────────────┬───────────────┘
+                                                    │
+                                                    ▼
+                                    [Shopper Adds to Cart / Converts]
+</pre>
+
+<h3>Core Technological Pillars</h3>
+<ol>
+  <li><strong>Multimodal Perceptual Geometry:</strong> Catalog items are indexed beyond text titles and metadata tags. ProjectD processes visual silhouettes, aesthetic structures, color palettes, and stylistic cues (via Vision Transformers such as DINOv2/SigLIP), mapping the user's active browsing path into a dense, unified taste space.</li>
+  <li><strong>DCN-v2 Latent Feature Crossing:</strong> Unlike basic nearest-neighbor retrieval (cosine similarity), the DCN-v2 network applies recursive matrix cross-layers. This models multi-order interactions between user style affinity, session cadence, and catalog attributes, ensuring accurate recommendations even for new product drops lacking historical interaction data.</li>
+  <li><strong>Automated Feedback & Telemetry Scorer:</strong> A lightweight client-side SDK passively measures physical engagement metrics:
+    <ul>
+      <li><em>Dwell-Time Ratios:</em> Compares expected token/asset examination times against actual view durations to detect unengaged skimming vs. deliberate evaluation.</li>
+      <li><em>Conversational & Action Modes:</em> Employs trained cross-encoders to identify implicit correction, rephrasing, and cart-abandonment events.</li>
+      <li><em>Happy-but-Wrong Conflict Resolution:</em> Detects when customer actions diverge from surface-level satisfaction metrics, ensuring unhelpful defaults are immediately flagged.</li>
+    </ul>
+  </li>
+  <li><strong>Active Bayesian Prior Adaptation:</strong> Turn-by-turn interactions update a Dirichlet-Multinomial prior distribution. If an initial stylistic framing produces session friction, the system automatically penalizes that hypothesis and reweights the catalog toward alternative intents in real time.</li>
+</ol>
+
+<h2>4. Business Impact & Client Lift Comparison</h2>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 22%;">Dimension</th>
+      <th style="width: 39%;">Conventional Storefront Experience</th>
+      <th style="width: 39%;">ProjectD Powered Storefront</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Discovery Mechanism</strong></td>
+      <td>Literal string/keyword match; rigid catalog filters.</td>
+      <td>Multi-order perceptual geometry across aesthetic, visual, and stylistic dimensions.</td>
+    </tr>
+    <tr>
+      <td><strong>Recommendation Engine</strong></td>
+      <td>Static historical lookups ("Frequently Bought Together") or global bestsellers.</td>
+      <td>Adaptive DCN-v2 feature crossing based on real-time active session signals.</td>
+    </tr>
+    <tr>
+      <td><strong>Friction Sensitivity</strong></td>
+      <td>Blind to customer disengagement; no signal captured when users bounce.</td>
+      <td>Real-time passive telemetry flags search stalls and adapts prior distributions immediately.</td>
+    </tr>
+    <tr>
+      <td><strong>Handling Cold Items</strong></td>
+      <td>Struggles on new inventory due to absence of historical click volume.</td>
+      <td>Embeds new items directly into the perceptual taste space, providing cold-start lift.</td>
+    </tr>
+    <tr>
+      <td><strong>Commercial Metric</strong></td>
+      <td>Stagnant 1.0%–2.2% Conversion Rate; high Customer Acquisition Cost (CAC) burn.</td>
+      <td>Projected <strong>15% to 35% lift</strong> in add-to-cart conversions, higher session value, and improved ROAS.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>5. Technical Integration & Delivery Specs</h2>
+<p>ProjectD is designed as a modular, low-friction integration for existing e-commerce systems (Shopify Plus, headless commerce architectures, or custom stacks).</p>
+<ul>
+  <li><strong>Client Script Footprint:</strong> Sub-15 KB lightweight JavaScript SDK deployed via Google Tag Manager or direct header injection. Captures non-PII behavioral telemetry (dwell duration, scroll velocity, copy actions, search edits).</li>
+  <li><strong>Serving Latency:</strong> P99 sub-30ms execution via optimized ONNX Runtime and dynamic batching layers, fitting seamlessly within existing page-render pipelines.</li>
+  <li><strong>API Delivery Surface:</strong>
+    <ul>
+      <li><code>POST /v1/rerank</code>: Accepts candidate product batches and returns engagement-weighted rankings within the active session.</li>
+      <li><code>POST /v1/feedback</code>: Asynchronously ingests conversion outcomes, cart additions, or bounce events to execute closed-loop model updates.</li>
+    </ul>
+  </li>
+</ul>
+
+</body>
+</html>
