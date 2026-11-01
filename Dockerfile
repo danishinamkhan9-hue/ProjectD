@@ -31,9 +31,13 @@ COPY start.sh .
 # Ensure startup script has execution permissions
 RUN chmod +x start.sh
 
-# Pre-cache CLIP model during build so first request is instant
-RUN python -c "from transformers import CLIPModel, CLIPProcessor; CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32'); CLIPModel.from_pretrained('openai/clip-vit-base-patch32')"
-
+# Pre-cache both CLIP and DeBERTa during build so startup is instant
+RUN python -c "from transformers import CLIPModel, CLIPProcessor, AutoModelForSequenceClassification, AutoTokenizer; \
+    CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32'); \
+    CLIPModel.from_pretrained('openai/clip-vit-base-patch32'); \
+    AutoTokenizer.from_pretrained('microsoft/deberta-v3-small'); \
+    AutoModelForSequenceClassification.from_pretrained('microsoft/deberta-v3-small')"
+    
 EXPOSE 8501 8000
 
 # Execute orchestration startup script
