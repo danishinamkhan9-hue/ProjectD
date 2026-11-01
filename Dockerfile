@@ -20,12 +20,16 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Copy application source code and checkpoints
+# Copy all application source modules and scripts
 COPY app.py .
 COPY multimodal_embedder.py .
 COPY demo_dashboard.py .
+COPY ProjectD.py .
+COPY projectd_closed_loop.py .
 COPY start.sh .
-COPY deberta-feedback-finetuned ./deberta-feedback-finetuned
+
+# Ensure startup script has execution permissions
+RUN chmod +x start.sh
 
 # Pre-cache CLIP model during build so first request is instant
 RUN python -c "from transformers import CLIPModel, CLIPProcessor; CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32'); CLIPModel.from_pretrained('openai/clip-vit-base-patch32')"
