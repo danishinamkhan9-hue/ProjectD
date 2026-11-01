@@ -5,14 +5,15 @@ Visual testbench for multimodal taste-reranking and closed-loop feedback modelin
 from __future__ import annotations
 
 import json
+import time
 import requests
 import streamlit as st
 
 API_BASE = "http://127.0.0.1:8000"
 
 st.set_page_config(
-    page_title="ProjectD | Real-Time Taste Engine",
-    page_icon="⚡",
+    page_title="ProjectD | Taste Intelligence Platform",
+    page_icon="●",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -39,25 +40,38 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("⚡ ProjectD: Multimodal Taste Reranker & Feedback Loop")
+st.title("ProjectD: Multimodal Taste Reranker & Feedback Loop")
 st.caption("B2B SaaS Demonstration Engine | Resolving Underdetermination via DCN-v2 & Bayesian Telemetry")
 
 # =====================================================================
 # SIDEBAR: TENANT CONFIG & SESSION STATUS
 # =====================================================================
+def probe_api_health(retries: int = 3, delay: float = 1.0) -> bool:
+    """Probes FastAPI across /healthz and / with retries to handle warm-up."""
+    endpoints = [f"{API_BASE}/healthz", f"{API_BASE}/"]
+    for _ in range(retries):
+        for endpoint in endpoints:
+            try:
+                res = requests.get(endpoint, timeout=1.5)
+                if res.status_code == 200:
+                    return True
+            except requests.exceptions.RequestException:
+                pass
+        time.sleep(delay)
+    return False
+
 with st.sidebar:
     st.header("Tenant Control")
     user_id = st.text_input("Active User ID", value="fashion_startup_user")
     
-    # Health Probe
-    try:
-        health_resp = requests.get(f"{API_BASE}/healthz", timeout=1.0)
-        if health_resp.status_code == 200:
-            st.success("Core Engine API: Online (Port 8000)")
-        else:
-            st.error("Core Engine API: Unhealthy")
-    except Exception:
-        st.error("Core Engine API: Offline. Run `uvicorn app:app`.")
+    # Resilient Health Probe
+    is_online = probe_api_health(retries=2, delay=0.5)
+    if is_online:
+        st.success("Core Engine API: Online (Port 8000)")
+    else:
+        st.warning("Core Engine API: Initializing or Warming Up...")
+        if st.button("🔄 Reconnect Engine", use_container_width=True):
+            st.rerun()
 
     st.markdown("---")
     st.subheader("Engine Hyperparameters")
